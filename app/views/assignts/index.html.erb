@@ -1,0 +1,40 @@
+<h1> ALL Treatments </h1>
+<table class="table">
+  <thead>
+    <th>Treatment Name</th>
+    <th>Assign to Doctor</th>
+  </thead>
+  <tbody>
+    <% @treatment_not_added.each do |treatment|%>
+      <tr>
+        <td><%= treatment.name %></td>
+        <td>
+          <%= form_tag(hospital_assignt_assign_treatment_path(@hospital.id, treatment.id), method: :post) do %>
+            <%= select_tag :doctor_id, options_from_collection_for_select(@doctors, :id, :name), include_blank: true %>
+            <%= label_tag :price%>
+            <%= text_field_tag :price%>
+            <%= submit_tag "Assign to Hospital" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<h1> Treatment Added</h1>
+<table class="table" >
+  <thead>
+    <th>Treatment Name</th>
+    <th>Assigned Doctor</th>
+    <th>Price</th>
+  </thead>
+  <tbody>
+    <% @hospital_treatments.each do |hospital_treatment|%>
+      <tr>
+        <td><%= hospital_treatment.treatment.name %></td>
+        <td><%= hospital_treatment.doctor&.name || 'Not assigned' %></td>
+        <td><%= hospital_treatment.price %></td>
+        <td><%= link_to "Remove from Hospital" , hospital_assignt_unassign_treatment_path(@hospital.id, hospital_treatment.id, {doctor_id: hospital_treatment.doctor_id, treatment_id:hospital_treatment.treatment_id})%></td>
+      </tr>
+    <% end%>
+  </tbody>
+</table>

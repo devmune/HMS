@@ -1,0 +1,23 @@
+<div class="col-lg-6 mx-lg-auto">
+  <div class="card shadow">
+    <div class="card-header">
+      <h2 class="card-title text-center">Add Treatment</h2>
+    </div>
+    <div class="card-body px-3">
+      <%= form_for(@treatment, url: hospital_treatments_path) do |form| %>
+        <% if @treatment.errors.any? %>
+          <% @treatment.errors.full_messages.each do |message| %>
+            <h3><%= message %></h3>
+          <% end %>
+        <% end %>
+        <div class="form-group">
+          <%= form.label :name, class: 'mb-2' %>
+          <%= form.text_field :name, class: 'form-control form-control-lg', :required => true %>
+        </div>
+        <div class="form-group mt-2">
+          <%= form.submit 'Create Treatment', class: 'btn btn-primary mb-3' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<h1>Hospital Details</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Hospital Name</th>
+      <th>City</th>
+      <th>Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @hospital.name %></td>
+      <td><%= @hospital.city %></td>
+      <td><%= @hospital.address %></td>
+    </tr>
+  </tbody>
+</table>
+<hr>
+<h1>Hospital Treatments</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Treatment Name</th>
+      <th>Assigned Doctor</th>
+      <th>Price</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @hospital_treatments.each do |hospital_treatment| %>
+      <tr>
+        <td><%= hospital_treatment.treatment.name %></td>
+        <td><%= hospital_treatment.doctor&.name || 'Not assigned' %></td>
+        <td><%= hospital_treatment.price %></td>
+        <td><%= link_to 'Request Appointment', hospital_appointments_path(@hospital, { hospital_treatment_id: hospital_treatment.id }), method: :post %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

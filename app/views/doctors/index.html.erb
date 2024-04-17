@@ -1,0 +1,32 @@
+<h1> ALL Doctors </h1>
+<table class="table ">
+  <thead>
+    <th>Doctor Name</th>
+    <th>Email</th>
+  </thead>
+  <tbody>
+    <% @doctor_not_added.each do |user|%>
+      <tr>
+        <td><%=user.name %></td>
+        <td><%=user.email %></td>
+        <td><%= link_to "Add Doctor" , hospital_doctor_add_doctor_path(@hospital.id,user.id)%></td>
+      <% end%>
+    </tbody>
+  </table>
+  <h1> Doctors Added</h1>
+  <table class="table">
+    <thead>
+      <th>Doctor Name</th>
+      <th>Email</th>
+    </thead>
+    <tbody>
+      <% @doctor_added.each do |user|%>
+        <tr>
+          <td><%=user.name %></td>
+          <td><%=user.email %></td>
+          <td><%= link_to "Remove" , hospital_doctor_remove_doctor_path(@hospital.id,user.id)%></td>
+        </tr>
+      <% end%>
+    </tbody>
+  </table>
+</table>

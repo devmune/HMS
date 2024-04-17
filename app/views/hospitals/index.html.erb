@@ -1,0 +1,36 @@
+<h1>Hospitals</h1>
+<% @ability = current_ability %>
+<% if @ability.can? :create, Hospital %>
+  <%= link_to "Create New Hospital", new_hospital_path %>
+<% end %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>City</th>
+      <th>Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @hospitals.each do |hospital| %>
+      <tr>
+        <td><%= hospital.name %></td>
+        <td><%= hospital.city %></td>
+        <td><%= hospital.address %></td>
+        <% if @ability.can? :edit, Hospital %>
+          <td><%= link_to 'Edit', edit_hospital_path(hospital), method: 'get' %></td>
+        <% end %>
+        <td><%= link_to 'show', hospital_appointments_path(hospital), method: 'get' %></td>
+        <% if @ability.can? :destroy, Hospital %>
+          <td><%= link_to 'Delete', hospital_path(hospital), data: { turbo_method: :delete } %></td>
+        <% end %>
+        <% if current_user&.admin? || current_user&.doctor? %>
+          <td><%= link_to 'Treatment', hospital_treatments_path(hospital) %></td>
+        <% end %>
+        <% if current_user.admin? %>
+          <td><%= link_to 'Add Doctor', hospital_doctors_path(hospital) %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

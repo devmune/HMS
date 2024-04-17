@@ -1,0 +1,75 @@
+<% if current_user&.Patient? || current_user&.Admin?%>
+  <h1>Available Treatments</h1>
+  <table class="table table-sm table-striped ml-4" style="max-width: 100rem;">
+    <thead>
+      <th>Treatment Name</th>
+      <th>Doctors</th>
+      <th>Price</th>
+    </thead>
+    <tbody>
+      <% @request_not_added.each do |hospital_treatment| %>
+        <tr>
+          <td><%= hospital_treatment&.treatment&.name %></td>
+          <td><%= hospital_treatment&.doctor&.name%></td>
+          <td><%= hospital_treatment&.price %></td>
+          <td><% if current_user&.Patient?%>
+              <%= button_to 'Request Appointment', hospital_appointments_path(@hospital, {hospital_treatment_id:hospital_treatment.id}) ,method: :post %>
+            </td>
+          <%end%>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<%end%>
+<%if current_user&.Patient?%>
+  <h1>Requested Treatments</h1>
+  <table class="table table-sm table-striped ml-4" style="max-width: 100rem;">
+    <thead>
+      <th>Treatment Name</th>
+      <th>Doctors</th>
+      <th>Price</th>
+      <th>Action</th>
+    </thead>
+    <tbody>
+      <% @request_added.each do |request| %>
+        <tr>
+          <td><%= request.hospital_treatment.treatment.name %></td>
+          <td><%= request.hospital_treatment.doctor.name%></td>
+          <td><%= request.hospital_treatment.price %></td>
+          <td>
+            <%= button_to 'Cancel Request', hospital_appointment_path(@hospital, request.id), method: :delete %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<%end%>
+<% if current_user&.Doctor?%>
+  <h1>Appointment Requests</h1>
+  <table class="table table-sm table-striped ml-4" style="max-width: 50rem;">
+    <thead>
+      <tr>
+        <th>Patient</th>
+        <th>Treatment</th>
+        <th>Price</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @appointment_requests.each do |appointment_request| %>
+        <tr>
+          <td><%= appointment_request.patient&.name %></td>
+          <td><%= appointment_request.hospital_treatment.treatment&.name %></td>
+          <td><%= appointment_request.hospital_treatment&.price %></td>
+          <td><%= appointment_request.status %></td>
+          <td>
+            <% if appointment_request.pending? %>
+              <%= link_to 'Accept', accept_hospital_appointment_path(@hospital,appointment_request.id), method: :get %>
+              <%= link_to 'Reject', reject_hospital_appointment_path(@hospital,appointment_request.id), method: :get %>
+            <% end %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  <%end%>
+<%end%>

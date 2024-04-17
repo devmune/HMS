@@ -1,0 +1,24 @@
+<h1>Treatments</h1>
+<% @ability = current_ability %>
+<%= link_to "Create New Treatment", new_hospital_treatment_path%>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+    <% @treatments.each do |treatment|%>
+      <tr>
+      </thead>
+      <td><%= treatment.name%></td>
+      <td><%= link_to 'Show', hospital_treatment_path(@hospital.id,treatment), method:'get'%></td>
+      <td><%= link_to 'Edit', edit_hospital_treatment_path(@hospital.id,treatment), method:'get'%></td>
+      <% if @ability.can? :destroy, Treatment %>
+        <td><%= link_to 'Delete', hospital_treatment_path(:hospital_id,treatment),data: {turbo_method: :delete} %></td>
+      <%end%>
+      <% if current_user.admin? || current_user.doctor?%>
+        <td><%= link_to 'Assign Doctor',hospital_assignts_path(@hospital, treatment_id: treatment.id)%>
+        </tr>
+      <%end%>
+    <%end%>
+  </thead>
+</table>
